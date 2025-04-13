@@ -378,6 +378,14 @@ body {
     
   }
 }
+@keyframes menuToTop {
+  from {
+    transform: translateY(32px);
+  }
+  to {
+    transform: translateY(0px);  
+  }
+}
 .empty-cart__title {
   font-size: 24px;
   font-family: "RedHatBold", sans-serif;

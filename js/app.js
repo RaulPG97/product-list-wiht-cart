@@ -4,6 +4,7 @@ import {
   animateCartOnFirstItem,
   switchToQuantityControls,
   createCartItemNode,
+  hideCartAnimation
 } from "./modules/helper.js";
 import { Product } from "./classes/Product.js";
 import { Cart } from "./classes/Cart.js";
@@ -40,12 +41,10 @@ window.addEventListener("DOMContentLoaded", async () => {
       activeAddTocartBtn.style.display = "grid";
 
       let { quantity } = cart.products.find(
-        (product) => (product.id = card.id)
+        (product) => (product.id == card.id)
       );
-      console.log(
-        (activeAddTocartBtn.querySelector(".quantityText").textContent =
-          quantity)
-      );
+
+      activeAddTocartBtn.querySelector(".quantityText").textContent = quantity;
     }
 
     addToCartButton.addEventListener("click", (e) => {
@@ -68,7 +67,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       if (productInCart) {
         cart.saveToLocalStorage(cart.products);
-        
+
         productsNode = createCartItemNode(productInCart);
 
         cart.renderProductInCart(productsNode, cartOrder);
@@ -85,9 +84,19 @@ window.addEventListener("DOMContentLoaded", async () => {
       if (!productInCart) {
         switchToQuantityControls(e, false);
         cart.saveToLocalStorage(cart.products);
-        cart.removeFromCart(e.target.parentNode.id)
+        cart.removeFromCart(e.target.parentNode.id);
+
+        if (cart.hasItems === false) {
+          console.log(cart.hasItems);
+          console.log(cart.products);
+          
+          hideCartAnimation()
+        }
+        
         return;
       }
+      //*si el carrito esta vacio, esconder el carrito en el dom 
+     
 
       cart.saveToLocalStorage(cart.products);
       productQuantityText.textContent = productInCart.quantity;

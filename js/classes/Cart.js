@@ -42,11 +42,18 @@ export class Cart {
 
       return productInCart;
     } else {
-      this.products = this.products.filter((product) => product.id != id);
 
-      console.log(this.products);
-      return;
+      this.products = this.products.filter((product) => product.id != id);
+      this.hasItems = this.products.length > 0;
+      
+      if(!this.hasItems){
+        console.log(this.products);
+        
+         return;
+      }
+       
     }
+    
   }
 
   saveToLocalStorage(cart) {
@@ -56,7 +63,7 @@ export class Cart {
   loadFromLocalStorage() {
     let cartProducts = JSON.parse(localStorage.getItem("cart"));
 
-    if (cartProducts.length == 0) {
+    if ( cartProducts == null || cartProducts.length == 0 ) {
       console.log("Error al cargar los productos");
 
       this.hasItems = false;
@@ -87,7 +94,7 @@ export class Cart {
     console.log(productTotal);
     //*actualizar las propiedades
     productQuantity.textContent ="X" + quantity;  
-     productTotal.textContent = "$" + quantity * price;
+     productTotal.textContent = "$" + (quantity * price).toFixed(2);
   }
   renderProductInCart(product, parentContainer) {
 
@@ -122,11 +129,8 @@ export class Cart {
   }
   removeFromCart(productNodeId){
     this.productNodes[productNodeId].remove();
-    this.hasItems = false
     delete this.productNodes[productNodeId]
     console.log(this.productNodes);
-    
-    
   }
 
 }

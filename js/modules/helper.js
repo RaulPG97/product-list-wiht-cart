@@ -29,7 +29,7 @@ export function createProductCard(product) {
 
   let productCard = document.createElement("article");
   productCard.classList = "product-card";
-  productCard.id= product.id;
+  productCard.id = product.id;
 
   //* Se creat la etiquet figure que contiene la imagen del producto y el boton para agregar al carrito
 
@@ -90,7 +90,7 @@ export function createProductCard(product) {
 
   let productPrice = document.createElement("p");
   productPrice.classList = "product-card__price";
-  productPrice.innerText = `$` + product.price;
+  productPrice.innerText = `$` + product.price.toFixed(2);
 
   productDetails.appendChild(productCategory);
   productDetails.appendChild(productName);
@@ -132,13 +132,16 @@ export function createCartItemNode(productInCart) {
   const cartItemPrice = document.createElement("p");
 
   cartItemPrice.classList = "cart__item-price";
-  cartItemPrice.textContent = `@ $${parseFloat(product.price)}`;
+  cartItemPrice.textContent = `@ $${product.price.toFixed(2)}`;
   cartItemPrice.id = productInCart.id;
 
   const cartItemTotal = document.createElement("p");
   cartItemTotal.classList = "cart__item-total";
   cartItemTotal.id = productInCart.id;
-  cartItemTotal.textContent = `$${product.price * productInCart.quantity}`;
+  let itemTotal = product.price * productInCart.quantity;
+  cartItemTotal.textContent = `$${(
+    product.price * productInCart.quantity
+  ).toFixed(2)}`;
 
   carItemDetails.appendChild(cartItemName);
   carItemDetails.appendChild(cartItemQuantity);
@@ -181,7 +184,7 @@ export function animateCartOnFirstItem() {
   menu.style.animation = "bajarMenu 600ms ease-in-out ";
   cart.style.display = "grid";
 
-  cart.style.animation = "subirCarro 1100ms ease-in-out forwards";
+  cart.style.animation = "subirCarro 1100ms ease-in-out";
 
   setTimeout(() => {
     menu.style.zIndex = "10";
@@ -189,5 +192,18 @@ export function animateCartOnFirstItem() {
 
     cart.style.gridRow = "1/2";
     menu.style.gridRow = " 2/3";
+  }, 500);
+}
+
+export function hideCartAnimation() {
+  console.log("menuToTop");
+  menu.style.animation = "menuToTop 400ms ease-in";
+
+  cart.style.display = "none";
+  emptyCart.style.display = "grid";
+
+  setTimeout(() => {
+    menu.style.gridRow = " 1/2";
+    emptyCart.style.gridRow = " 2/3";
   }, 500);
 }
