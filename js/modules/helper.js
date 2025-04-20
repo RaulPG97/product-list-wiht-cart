@@ -6,7 +6,7 @@ const menu = document.querySelector(".menu");
 const cart = document.querySelector(".cart");
 const cartTitle = document.querySelector(".cart__title");
 const cartOrder = document.querySelector(".cart__order");
-
+ const cartTotal = document.querySelector(".cart__total-amount")
 export async function getProduct() {
   try {
     const response = await fetch("./data.json");
@@ -206,4 +206,10 @@ export function hideCartAnimation() {
     menu.style.gridRow = " 1/2";
     emptyCart.style.gridRow = " 2/3";
   }, 500);
+}
+export function displayCartTotal(cartObject){
+    let {orderTotal} = cartObject.getCartSumary();
+    console.log(cartTotal);
+     cartTotal.textContent = orderTotal.toString()
+  
 }
