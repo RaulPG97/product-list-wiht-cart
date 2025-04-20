@@ -4,22 +4,23 @@ import {
   animateCartOnFirstItem,
   switchToQuantityControls,
   createCartItemNode,
-  hideCartAnimation
+  hideCartAnimation,
+  displayCartTotal
 } from "./modules/helper.js";
 import { Product } from "./classes/Product.js";
 import { Cart } from "./classes/Cart.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
+ 
   const cartOrder = document.querySelector(".cart__order");
   let productsNode;
   await Product.loadProducts();
 
   let product = new Product();
   let cart = new Cart();
-
   let productInCart;
   const loadProductsFromLocalStorage = cart.loadFromLocalStorage();
-
+  cart.getCartSumary()
   if (loadProductsFromLocalStorage) {
     if (cart.hasItems == true) {
       animateCartOnFirstItem();
@@ -64,14 +65,14 @@ window.addEventListener("DOMContentLoaded", async () => {
       //*cambio los controles agregar al carrirto
       //*cambio el cantidad del producto en el boton de  agregar o restar del carrito
       productInCart = cart.adToCart(e.target.id);
-
+      
       if (productInCart) {
         cart.saveToLocalStorage(cart.products);
 
         productsNode = createCartItemNode(productInCart);
 
         cart.renderProductInCart(productsNode, cartOrder);
-
+        displayCartTotal(cart);
         switchToQuantityControls(e, true);
 
         productQuantityText.textContent = productInCart.quantity;
@@ -105,6 +106,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         e.target.parentNode.id,
         productInCart.quantity
       );
+      displayCartTotal(cart);
     });
 
     incrementProductBtn.addEventListener("click", (e) => {
@@ -117,6 +119,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         e.target.parentNode.id,
         productInCart.quantity
       );
+      displayCartTotal(cart);
     });
   });
 });
